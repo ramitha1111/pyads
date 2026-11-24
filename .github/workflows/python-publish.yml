@@ -26,6 +26,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - run: |
           pip install -e . -vv
           python -c "import pyads; pyads.Connection(ams_net_id='127.0.0.1.1.1', ams_net_port=851)"
@@ -76,6 +83,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       # Now install the package from the local wheels and try to use it:
       # Use `python -m pip` instead of `pip` directly: on the riscv64 runner the
